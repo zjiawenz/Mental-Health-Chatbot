@@ -1,0 +1,35 @@
+# Ignore Python cache and environment
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.env
+*.venv
+venv/
+ENV/
+env/
+
+# VS Code & IDE settings
+.vscode/
+.idea/
+
+# Streamlit secrets (very important!)
+.streamlit/secrets.toml
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Log and output files
+*.log
+*.out
+*.bak
+
+# Jupyter and notebook checkpoints
+.ipynb_checkpoints
+
+# Package installers and metadata
+*.egg-info/
+dist/
+build/
