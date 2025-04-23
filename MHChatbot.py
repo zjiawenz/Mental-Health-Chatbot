@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-import ollama
+import requests
 
 st.markdown(
     """ 
@@ -18,6 +18,9 @@ st.markdown(
     """
 )
 
+# Load your Groq API key from Streamlit Secrets
+api_key = st.secrets["GROQ_API_KEY"]
+
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": "Hi I'm Serenity. How's everything going?"}]
@@ -34,23 +37,35 @@ if prompt := st.chat_input("How do you feel today?"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Build full conversation context for the model
-    conversation_history = ""
-    for msg in st.session_state.messages:
-        role = "You" if msg["role"] == "user" else "Serenity"
-        conversation_history += f"{role}: {msg['content']}\n"
+    # Construct API-compatible message list
+    formatted_messages = [
+        {"role": msg["role"], "content": msg["content"]}
+        for msg in st.session_state.messages
+    ]
 
-    # Call the model using the full context
+    # Send to Groq
+    url = "https://api.groq.com/openai/v1/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "model": "llama3-8b-8192",
+        "messages": [{"role": "system", "content": "You are a compassionate therapist helping users feel better."}] + formatted_messages,
+        "temperature": 0.7
+    }
+
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-
         try:
-            client = ollama.Client()
-            response = client.generate(model="mhgeneral", prompt=conversation_history)
+            response = requests.post(url, headers=headers, json=payload)
+            response.raise_for_status()
+            reply = response.json()["choices"][0]["message"]["content"]
 
-            for chunk in response.response.split():
-                full_response += chunk + " "
+            # Animate response word-by-word
+            for word in reply.split():
+                full_response += word + " "
                 time.sleep(0.03)
                 message_placeholder.markdown(full_response + "▌")
             message_placeholder.markdown(full_response)
@@ -59,5 +74,6 @@ if prompt := st.chat_input("How do you feel today?"):
             full_response = "⚠️ Error talking to Serenity: " + str(e)
             message_placeholder.markdown(full_response)
 
-    # Append assistant's response to history
+    # Append assistant response to history
     st.session_state.messages.append({"role": "assistant", "content": full_response})
+
