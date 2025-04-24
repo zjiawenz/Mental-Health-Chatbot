@@ -3,15 +3,15 @@
 
 Welcome to **Serenity**, an open-source mental health chatbot built with the LLaMA model family, Streamlit, and prompt engineering techniques. The goal is to offer a calm, empathetic, and informative digital companion—serving as a mental wellness support tool while remaining grounded in open, responsible AI development.
 
-🌐 **Try the Demo**: [Launch the Chatbot](http://192.168.1.206:8501/)  
+🌐 **Try the Demo**: [Launch the Chatbot](https://mental-health-chatbot-zjiawenz.streamlit.app/)  
 
 ---
 
 ## 📦 Project Features
 
 - 🧘 **Empathetic Chatbot** persona with prompt-engineered emotional support
-- 🧠 Powered by **LLaMA 2 7B** for on-device conversational capability
-- 🖥️ **Streamlit-based Web Interface** for browser-based interaction
+- 🧠 **Powered by LLaMA 3 (8B)** via Groq Cloud API for fast, cloud-hosted conversational capability
+- 🖥️ **Streamlit-based Web Interface** for lightweight browser-based interaction
 - 📚 **Future-ready** for cultural and emotional personalization, RAG memory, and fine-tuning
 
 ---
@@ -54,13 +54,25 @@ Welcome to **Serenity**, an open-source mental health chatbot built with the LLa
 
 ---
 
-## 🙏 Disclaimer
+## 📅 Project History
 
-This chatbot is intended for **educational purposes only**. It does not replace professional therapy or crisis services. If you are in emotional distress, please seek support from a licensed mental health provider.
+### [2025-04-23] Switched from Ollama to Groq API
+- Removed local dependency on `ollama.Client()`
+- Integrated Groq-hosted LLaMA 3 (8B) via `requests`
+- Updated prompt to structured, persona-based system message
+- Transitioned from local-only development to Streamlit Cloud deployment
+- App is now accessible via public URL with cloud-based hosting and automatic builds
+
+### [2025-04-21] Initial Commit
+- Local inference using `llama.cpp` with 4-bit quantized LLaMA 2 7B Chat model
+- Prompt engineering to simulate an emotionally supportive therapist assistant
+- Streamlit-based UI for lightweight demo
+- Implemented session-based chat flow
+- Added assistant typing animation with `time.sleep()`
 
 ---
 
 ## 📫 Contact
 
 For questions, please contact:
-**Jiawen Zou** · [annajzou@gmail.com] · GitHub: [@zjiawenz]
+**Jiawen Zou** · E-mail: [annajzou@gmail.com] · GitHub: [@zjiawenz](https://github.com/zjiawenz)
